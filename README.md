@@ -1,11 +1,9 @@
-# consultingprojatinsight
-
-Technologies/Programming Languages used:
+# Technologies/Programming Languages used:
     1. Python
     2. Spark
     3. Google Cloud Platform
 
-Project setup:
+# Project setup:
     1. Set up a cluster 
         a. The cluster can be set up through the DataProc console on GCP (The cluster that runs the pyspark jobs
             on GCP are a four node cluster: one master and three worker nodes)
@@ -29,12 +27,8 @@ Project setup:
             ii. Instructions to set up the batch flow on GCP - 
                 https://medium.com/google-cloud/running-a-serverless-batch-workload-on-gcp-with-cloud-scheduler-cloud-functions-and-compute-86c2bd573f25
 
-Testing:
+# Testing:
     1. The job reads the data from three different sources and puts the final set of data into unified_messaging_dev.email_analytics table.
     2. There should be one row per email_id. Hence, the following query will yeild zero results:
         select a.original_email_id, count(*)  from `table_name` a
         group by a.original_email_id having count(*) > 1;
-    
-
-
-
