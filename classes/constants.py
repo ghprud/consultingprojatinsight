@@ -20,15 +20,15 @@ class Constants:
         return 'messaging-bucket'
 
     @staticmethod
-    def get_messaging_tasks_table_name( ):
+    def get_table1( ):
         return 'msg_tasks'
     
     @staticmethod
-    def get_messaging_task_metrics_table_name( ):
+    def get_table2( ):
         return 'xxxx'
 
     @staticmethod
-    def get_customer_io_table( ):
+    def get_table3( ):
         return 'cust_data'
     
     @staticmethod

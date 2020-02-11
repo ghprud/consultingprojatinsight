@@ -5,6 +5,8 @@ from pyspark.sql.functions import *
 from pyspark.sql.types import StructType, StructField, IntegerType, StringType, TimestampType, LongType, BooleanType
 import uuid
 
+import constants
+
 class Customer:
 
     def __init__(self):
@@ -23,22 +25,22 @@ class Customer:
 
         retunrs the dataframe with the required selected values
         """
-        tablecustomer = spark.read.format('bigquery') \
-            .option('table', Constants.get_customer_io_table()) \
+        table1 = spark.read.format('bigquery') \
+            .option('table', constants.Constants.get_customer_io_table()) \
             .option("viewsEnabled", "true") \
             .load().cache()
-        tablecustomer.createOrReplaceTempView('tablecustomer')
+        table1.createOrReplaceTempView('table1')
 
-        customer_email_event_filtered = tablecustomer \
-            .filter(tablecustomer.event_type != "email_sent")
+        table1_filtered = table1 \
+            .filter(table1.event_type != "XXl_XXt")
             
-        customer_email_event_filtered_temp = customer_email_event_filtered \
+        table1_filtered_temp = table1_filtered \
             .groupBy('data.XXXXX', 'XXXXX') \
             .count()
 
         # get the customer details #TODO find a better way to do it using the dataframe methods
         # need a unique set of email ids
-        customer_data_details = spark.sql(
+        table1_details = spark.sql(
             '''
             select a.data.XXXX  AS XXXX,
             a.data.XXXX AS XXXX,
@@ -50,28 +52,28 @@ class Customer:
             FROM XXX a
             '''
         )
-        customer_data_details_filtered = customer_data_details \
-            .where(customer_data_details.event_type == 'XXXX')
+        table1_details_filtered = table1_details \
+            .where(table1_details.event_type == 'XXXX')
 
-        joined_customer_details = customer_data_details_filtered.join (
-            customer_email_event_filtered_temp, \
-            customer_data_details_filtered.email_id == customer_email_event_filtered_temp.email_id, \
+        joined_table1_details = table1_details_filtered.join (
+            table1_filtered_temp, \
+            table1_details_filtered.XXX_id == table1_filtered_temp.XXX_id, \
             how='inner'
-        ).drop(customer_email_event_filtered_temp.email_id).drop(customer_data_details_filtered.event_type)
+        ).drop(table1_details_filtered.XXX_id).drop(table1_details_filtered.XXXX_type)
 
-        pivoted_table = joined_customer_details \
+        pivoted_table = joined_table1_details \
             .groupBy('XX') \
-            .pivot('event_type', \
+            .pivot('XXX_type', \
                 ['XXXXX', 'XXXX', 'XXXXX', 'XXXX', 'XXXXX', 'XXXXX']) \
             .sum('count').fillna(0)
 
-        temp_final_customerio_table = pivoted_table.join(
+        temp_final_table = pivoted_table.join(
             customer_data_details,
-            customer_data_details.email_id == pivoted_table.email_id,
+            customer_data_details.XXX_id == pivoted_table.XXX_id,
             how='inner'
-        ).drop(pivoted_table.email_id)
+        ).drop(pivoted_table.XXX_id)
 
-        final_customerio_table = temp_final_customerio_table.select (
+        final_table = temp_final_table.select (
             col('XXXXX').alias('XXXXX'), \
             'XXXXX', \
             'XXXXX', \
@@ -84,9 +86,9 @@ class Customer:
             col('XXXXX').alias('XXXX'), \
             col('XXXX').alias('XXXX'), \
             'XXXXXXXXXX',
-        ).where(temp_final_customerio_table.event_type == 'XXXXXX') \
+        ).where(temp_final_table.event_type == 'XXXXXX') \
             .withColumn("data_source", lit("secondsource").cast(StringType())) \
             .dropDuplicates(['XXX', 'XXXX', 'XXXX'])
     
 
-        return final_customerio_table
+        return final_table
