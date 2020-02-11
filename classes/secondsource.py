@@ -16,7 +16,7 @@ class Customer:
     #TODO: need better variable names
     def process_get_customerio_improved_df(self, spark):
         """
-        Process the data from 'alice-bip.stitch_customerio.data_latest_view'
+        Process the data from the second source
 
         arguments:
         spark -- variable with the spark config parameters
@@ -33,25 +33,25 @@ class Customer:
             .filter(tablecustomer.event_type != "email_sent")
             
         customer_email_event_filtered_temp = customer_email_event_filtered \
-            .groupBy('data.email_id', 'event_type') \
+            .groupBy('data.XXXXX', 'XXXXX') \
             .count()
 
         # get the customer details #TODO find a better way to do it using the dataframe methods
         # need a unique set of email ids
         customer_data_details = spark.sql(
             '''
-            select a.data.email_id  AS email_id,
-            a.data.customer_id AS employee_id,
-            a.data.variables.campaign.type AS campaign_type,
-            a.event_type as event_type,
-            concat(a.data.campaign_name, " || ", a.data.message_name ) AS campaign_name,
-            a.timestamp AS sent_at,
-            a.data.variables.customer AS customer_attributes
-            FROM tablecustomer a
+            select a.data.XXXX  AS XXXX,
+            a.data.XXXX AS XXXX,
+            a.data.variables.XXXx.type AS XXXX,
+            a.event_type as XXXX,
+            concat(a.data.XXXX, " || ", a.data.XXXXX ) AS XXXXX,
+            a.XXX AS XXXX,
+            a.data.variables.XXXX AS XXXX
+            FROM XXX a
             '''
         )
         customer_data_details_filtered = customer_data_details \
-            .where(customer_data_details.event_type == 'email_sent')
+            .where(customer_data_details.event_type == 'XXXX')
 
         joined_customer_details = customer_data_details_filtered.join (
             customer_email_event_filtered_temp, \
@@ -60,9 +60,9 @@ class Customer:
         ).drop(customer_email_event_filtered_temp.email_id).drop(customer_data_details_filtered.event_type)
 
         pivoted_table = joined_customer_details \
-            .groupBy('email_id') \
+            .groupBy('XX') \
             .pivot('event_type', \
-                ['email_bounced', 'email_opened', 'email_delivered', 'email_unsubscribed', 'email_spamreported', 'email_clicked']) \
+                ['XXXXX', 'XXXX', 'XXXXX', 'XXXX', 'XXXXX', 'XXXXX']) \
             .sum('count').fillna(0)
 
         temp_final_customerio_table = pivoted_table.join(
@@ -72,21 +72,21 @@ class Customer:
         ).drop(pivoted_table.email_id)
 
         final_customerio_table = temp_final_customerio_table.select (
-            col('email_id').alias('original_email_id'), \
-            'employee_id', \
-            'campaign_type', \
-            'campaign_name', \
-            col('sent_at').cast(TimestampType()), \
-            col('email_bounced').alias('bounced'), \
-            col('email_opened').alias('opened'), \
-            col('email_delivered').alias('delivered'), \
-            col('email_unsubscribed').alias('unsubscribed'), \
-            col('email_spamreported').alias('spamreported'), \
-            col('email_clicked').alias('clicked'), \
-            'customer_attributes',
-        ).where(temp_final_customerio_table.event_type == 'email_sent') \
+            col('XXXXX').alias('XXXXX'), \
+            'XXXXX', \
+            'XXXXX', \
+            'XXXXX', \
+            col('XXXX').cast(TimestampType()), \
+            col('XXXX').alias('XXXX'), \
+            col('XXXXXX').alias('XXXX'), \
+            col('XXXX').alias('XXXXXX'), \
+            col('XXXXX').alias('XXXX'), \
+            col('XXXXX').alias('XXXX'), \
+            col('XXXX').alias('XXXX'), \
+            'XXXXXXXXXX',
+        ).where(temp_final_customerio_table.event_type == 'XXXXXX') \
             .withColumn("data_source", lit("secondsource").cast(StringType())) \
-            .dropDuplicates(['original_email_id', 'employee_id', 'sent_at'])
+            .dropDuplicates(['XXX', 'XXXX', 'XXXX'])
     
 
         return final_customerio_table

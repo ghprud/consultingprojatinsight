@@ -13,7 +13,7 @@ class Constants:
 
     @staticmethod
     def get_output_table_name( ):
-        return 'alice-bip.unified_messaging_dev.email_analytics'
+        return 'analytics_output'
 
     @staticmethod
     def get_gcs_bucket_name( ):
@@ -25,7 +25,7 @@ class Constants:
     
     @staticmethod
     def get_messaging_task_metrics_table_name( ):
-        return 'msg_task_metrics'
+        return 'xxxx'
 
     @staticmethod
     def get_customer_io_table( ):

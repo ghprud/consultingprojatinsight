@@ -15,7 +15,7 @@ class FirstSource:
     #TODO: need better variable names
     def process_get_first_source_df_improved(self, spark):
         """
-        Process the data from messaging_tasks and messaging_task_metrics tables.
+        Process the data from two different data sources
 
         arguments:
         spark -- variable with the spark config parameters
@@ -34,20 +34,17 @@ class FirstSource:
                 .load()
         table_messaging_task_metrics.createOrReplaceTempView('table_messaging_task_metrics')
 
-        '''
-            bounced, delivered, unsubscribed, spamreported, opened, clicked
-        '''
         messaging_task_metrics_pivoted_table = table_messaging_task_metrics \
-            .groupBy('task_id') \
-            .pivot('metric_name', \
-                ['bounced', 'opened', 'delivered', 'unsubscribed', 'spamreported', 'clicked']) \
+            .groupBy('XXX') \
+            .pivot('XXX', \
+                ['XXX', 'XX', 'XXXX', 'XXXX', 'XXX', 'XXX']) \
             .sum('metric_count').fillna(0)
 
         messaging_task_details = spark.sql(
             '''
-            select mtasks.id as email_id, mtasks.employee_id as employee_id, mtasks.medium as medium,
-            mtasks.message_type as campaign_type, mtasks.message_subtype as campaign_name, 
-            mtasks.sent_at as sent_at
+            select mtasks.id as XXXX, mtasks.XXXXX as XXXXX, mtasks.XXXX as XXX,
+            mtasks.XXXX as XXXXX, mtasks.XXXX as XXXX, 
+            mtasks.XXXX as XXXX
             from table_messaging_tasks mtasks
             '''
         )
@@ -61,22 +58,22 @@ class FirstSource:
         )
 
         temp_final_msg_table = joined_messaging_tasks_metrics \
-            .withColumn("customer_attributes", lit(None).cast(StructType(Utilities.get_customer_schema()))) \
-            .withColumn("data_source", lit('firstsource').cast(StringType()))
+            .withColumn("XXXXXX", lit(None).cast(StructType(Utilities.get_customer_schema()))) \
+            .withColumn("XXXXX", lit('firstsource').cast(StringType()))
 
         final_msg_table = temp_final_msg_table.select( \
-            col('email_id').alias('original_email_id'), \
-            'employee_id', \
-            'campaign_type', \
-            'campaign_name', \
-            col('sent_at').cast(TimestampType()), \
-            'bounced', \
-            'opened', \
-            'delivered', \
-            'unsubscribed', \
-            'spamreported', \
-            'clicked', \
-            'customer_attributes',
-            'data_source'
+            col('XXXXX').alias('XXXXXXX'), \
+            'XXXXX', \
+            'XX', \
+            'XXXXXXXX', \
+            col('XXXXX').cast(TimestampType()), \
+            'XXXXX', \
+            'XXXX', \
+            'XXXXX', \
+            'XXXXX', \
+            'XX', \
+            'XX', \
+            'XXXX',
+            'XXXX'
         )
         return final_msg_table
