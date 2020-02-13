@@ -35,13 +35,13 @@ class Utilities:
         customerSchema is needed to match the set of arguments from another table
         """
         customerSchema = [
-            StructField("election_adjustment", LongType(), True),
-            StructField("start_date", StringType(), True),
-            StructField("mployer_id", LongType(), True),
-            StructField("enrolled_in_healthcare_fsa", BooleanType(), True),
-            StructField("address_city_name", StringType(), True),
-            StructField("organization_id", LongType(), True),
-            StructField("banking_institutions_connected_count", LongType(), True),
-            StructField("hfsa_enabled", BooleanType(), True)
+            StructField("XXXX", LongType(), True),
+            StructField("XXXXX", StringType(), True),
+            StructField("XXXX", LongType(), True),
+            StructField("XXXXX", BooleanType(), True),
+            StructField("xXXXXX", StringType(), True),
+            StructField("XXXXX", LongType(), True),
+            StructField("XXXXX", LongType(), True),
+            StructField("XXXXX", BooleanType(), True)
         ]
         return customerSchema
