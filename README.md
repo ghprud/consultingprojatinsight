@@ -28,7 +28,7 @@
                 https://medium.com/google-cloud/running-a-serverless-batch-workload-on-gcp-with-cloud-scheduler-cloud-functions-and-compute-86c2bd573f25
 
 # Testing:
-    1. The job reads the data from three different sources and puts the final set of data into unified_messaging_dev.email_analytics table.
-    2. There should be one row per email_id. Hence, the following query will yeild zero results:
-        select a.original_email_id, count(*)  from `table_name` a
-        group by a.original_email_id having count(*) > 1;
+    1. The job reads the data from three different sources and puts the final set of data into analytics table.
+    2. There should be one row per id. Hence, the following query will yeild zero results:
+        select a.id, count(*)  from `analytics` a
+        group by a.id having count(*) > 1;
